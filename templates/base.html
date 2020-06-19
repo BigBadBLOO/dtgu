@@ -1,0 +1,432 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0 user-scalable=0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'app_dtgu/images/favicon.png' %}" type="image/x-icon">
+    {% block title %}
+        <title>Базовый шаблон</title>
+    {% endblock %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/font-awesome-4.7.0/css/font-awesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_site/css/Chart.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_site/css/chosen.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_site/css/ag-grid.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_site/css/ag-theme-material.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/fonts.css' %}?11">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/alert.css' %}?11">
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/base.css' %}?=11">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/chosen.css' %}?=12">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/tables.css' %}?=11">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/btn.css' %}?=11">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/modal.css' %}?=11">
+
+
+
+    <script type="text/javascript" src="{% static 'admin_site/js/jquery-3.4.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin_site/js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'admin_site/js/ag-grid-community.min.noStyle.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'admin_site/js/Chart.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin_site/js/chosen.jquery.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'admin_site/js/tilt.jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'admin_site/js/jquery.cookie.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'admin_site/js/iconify.min.js' %}"></script>
+
+
+    <script type="text/javascript" src="{% static 'admin_site/js/function.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'admin_site/js/alert.js' %}"></script>
+
+    {% if user.is_authenticated %}
+        {% if user.profile.group.name == "Рекламодатель" %}
+            <script type="text/javascript" src="{% static 'admin_site/js/base_advertiser.js' %}"></script>
+        {% endif %}
+    {% endif %}
+
+    <script type="text/javascript" src="{% static 'admin_site/js/base.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'admin_site/js/text_filter.js' %}"></script>
+
+    <script>
+        if (is_save_sessions === undefined) {
+            $.cookie('save_sessions', true, {path: '/', expires: 1000});
+            window.location.href = '/logout_force/';
+        }
+    </script>
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+<span id="csrf_token">{% csrf_token %}</span>
+
+{% if user.is_authenticated %}
+    <nav class="my_nav_bar no-margin">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header fixed-brand">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" id="menu-toggle">
+                <span class="iconify" data-icon="simple-line-icons:list" data-inline="false"></span>
+            </button>
+            <a href="{% url 'index' %}">
+                <img class="logo" src="{% static 'admin_site/images/logo2.png' %}" alt="LOGO">
+            </a>
+        </div><!-- navbar-header-->
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2">
+                        <span class="iconify" data-icon="simple-line-icons:list" data-inline="false"></span>
+                    </button>
+                </li>
+            </ul>
+            <div class="header-h1 my-not-visible-xs"
+                 style="float: left;{% if  user.profile.group.name == "Рекламодатель" %}width: 33.33%;{% endif %}"><h1
+                    class="cut-text">
+                {% block head_title_1 %}{% endblock %}</h1>
+            </div>
+
+            <div class="pull-right">
+                <button id="full_screen" type="button" class="btn btn-purple btn-outline my-not-visible-xs" title="На весь экран..." style="margin-top: 13px;
+    margin-right: 10px;">
+                    <span  class="fa-stack"><i id="full_screen_label" class="fa fa-expand"></i></span>
+                </button>
+                {% if  user.profile.group.name == "Рекламодатель" %}
+                    <div class="header-h1 my-not-visible-xs" style="float: left">
+                        <h1><span id="advertiser_balance"></span></h1>
+                    </div>
+                {% endif %}
+                <span id="refresh_data_main"></span>
+            </div>
+        </div><!-- bs-example-navbar-collapse-1 -->
+    </nav>
+    <div id="wrapper" class="toggled-2">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+                <li>
+                    <a href="{% url 'index' %}">
+                        <div class="div-table" style="width: 100%">
+                            <div class="div-table-cell" style="width: 40px">
+                                <span class="iconify" data-icon="simple-line-icons:chart"
+                                      data-inline="false"></span>
+                            </div>
+                            <div class="div-table-cell">
+                                Дэшборд
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'leads_control' %}">
+                        <div class="div-table" style="width: 100%">
+                            <div class="div-table-cell" style="width: 40px">
+                                <span class="iconify" data-icon="simple-line-icons:people"
+                                      data-inline="false"></span>
+                            </div>
+                            <div class="div-table-cell">
+                                Лиды
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                {% if user.profile.group.name == "Администратор" or user.profile.group.name == "Менеджер" %}
+                    <li>
+                        <a href="#">
+                            <div class="div-table" style="width: 100%">
+                                <div class="div-table-cell" style="width: 40px">
+                                <span class="iconify" data-icon="simple-line-icons:diamond"
+                                      data-inline="false">
+                        </span>
+                                </div>
+                                <div class="div-table-cell">
+                                    Аналитика
+                                </div>
+                                <div class="div-table-cell" style="width: 40px">
+                                    <i class="fa fa-chevron-down"></i>
+                                </div>
+                            </div>
+
+                        </a>
+                        <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+
+                            {% if user.profile.group.name == "Администратор" %}
+                                <li><a href="{% url 'statistic_control' %}">Статистика</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'statistic_control_date' %}">По датам</a></li>
+                            <li><a href="{% url 'statistic_control_offer' %}">По офферам</a></li>
+                            <li><a href="{% url 'statistic_control_deposit' %}">По депозитам</a></li>
+                            {% if user.profile.group.name == "Администратор" %}
+                                <li><a href="{% url 'statistic_ab_test_control' %}">По A/B тестам </a></li>
+                            {% endif %}
+                            <li><a href="{% url 'statistic_control_taking' %}">По принятию</a></li>
+                            <li><a href="{% url 'statistic_control_status_type' %}">По осн. статусам</a></li>
+                            <li><a href="{% url 'statistic_control_status' %}">По доп. статусам</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if user.profile.group.name == "Рекламодатель" %}
+                    <li>
+                        <a href="#">
+                            <div class="div-table" style="width: 100%">
+                                <div class="div-table-cell" style="width: 40px">
+                                <span class="iconify" data-icon="simple-line-icons:diamond"
+                                      data-inline="false">
+                        </span>
+                                </div>
+                                <div class="div-table-cell">
+                                    Аналитика
+                                </div>
+                                <div class="div-table-cell" style="width: 40px">
+                                    <i class="fa fa-chevron-down"></i>
+                                </div>
+                            </div>
+
+                        </a>
+                        <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                            <li><a href="{% url 'statistic_control_status_type' %}">По осн. статусам</a></li>
+                            <li><a href="{% url 'statistic_control_status' %}">По доп. статусу</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if user.profile.group.name == "Администратор" %}
+                    <li class="user-admin">
+                        <a href="{% url 'accounts' %}">
+                            <div class="div-table" style="width: 100%">
+                                <div class="div-table-cell" style="width: 40px">
+                                    <span id="integration_icon" class="iconify" data-icon="simple-line-icons:social-facebook"
+                                          data-inline="false">
+                                    </span>
+                                </div>
+                                <div class="div-table-cell">
+                                    Интеграция
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if user.profile.group.name == "Администратор" or user.profile.group.name == "Менеджер" %}
+                    <li class="user-admin user-manager">
+                        <a href="{% url 'offers' %}">
+                            <div class="div-table" style="width: 100%">
+                                <div class="div-table-cell" style="width: 40px">
+                                <span class="iconify" data-icon="simple-line-icons:briefcase"
+                                      data-inline="false">
+                        </span>
+                                </div>
+                                <div class="div-table-cell">
+                                    Офферы
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'advertiser_control' %}">
+                            <div class="div-table" style="width: 100%">
+                                <div class="div-table-cell" style="width: 40px">
+                                    <span class="iconify" data-icon="simple-line-icons:wallet"
+                                          data-inline="false">
+                                </span>
+                                </div>
+                                <div class="div-table-cell">
+                                    Рекламодатели
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><a href="#">
+                        <div class="div-table" style="width: 100%">
+                            <div class="div-table-cell" style="width: 40px">
+                            <span class="iconify" data-icon="simple-line-icons:wrench"
+                                  data-inline="false">
+                            </span>
+                            </div>
+                            <div class="div-table-cell">
+                                Инструменты
+                            </div>
+                            <div class="div-table-cell" style="width: 40px">
+                                <i class="fa fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                        {% if user.profile.group.name == "Администратор" or user.profile.group.name == "Менеджер" %}
+                            <li><a href="{% url 'landing_control' %}">Лендинги</a></li>
+                        {% endif %}
+                        {% if user.profile.group.name == "Администратор" %}
+                            <li><a href="{% url 'flow_control' %}">Потоки</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+
+                <li><a href="#">
+                        <div class="div-table" style="width: 100%">
+                            <div class="div-table-cell" style="width: 40px">
+                            <span class="iconify" data-icon="simple-line-icons:credit-card"
+                                  data-inline="false">
+                            </span>
+                            </div>
+                            <div class="div-table-cell">
+                                Бухгалтерия
+                            </div>
+                            <div class="div-table-cell" style="width: 40px">
+                                <i class="fa fa-chevron-down"></i>
+                            </div>
+                        </div>
+
+                    </a>
+                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                        <li><a href="{% url 'score_control' %}">Cчета</a></li>
+                        {% if user.profile.group.name == "Администратор" or user.profile.group.name == "Менеджер" %}
+                            <li><a href="{% url 'finance_control' %}">Финансы</a></li>
+                            <li><a href="{% url 'revise_control' %}">Сверка</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'acts_revise_control' %}">Акты сверки</a></li>
+                        <li><a href="{% url 'acts_completed_control' %}"> Акты вып. работ</a></li>
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a id="settings" href="#">
+                        <div class="div-table" style="width: 100%">
+                            <div class="div-table-cell" style="width: 40px">
+                                <span class="iconify" data-icon="simple-line-icons:settings"
+                                      data-inline="false">
+                        </span>
+                            </div>
+                            <div class="div-table-cell">
+                                Настройки
+                            </div>
+                            <div class="div-table-cell" style="width: 40px">
+                                <i class="fa fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                        <li><a href="{% url 'account_setup' %}">Настройки аккаунта</a></li>
+                        <li><a href="{% url 'documentation' %}">Документация</a></li>
+                        {% if user.profile.group.name == "Администратор" or user.profile.group.name == "Менеджер"%}
+                            <li><a id='mail_badge' href="{% url 'mail_setup' %}">Настройки уведомлений</a></li>
+                        {% endif %}
+                        {% if user.profile.group.name == "Администратор" %}
+                            <li><a href="{% url 'profile_control' %}">Управление профилями юр лиц</a></li>
+                            <li><a href="{% url 'account_control' %}">Управление аккаунтами</a></li>
+                        {% endif %}
+                        <li><a id="signOut" href="#">Выход</a></li>
+                    </ul>
+
+                </li>
+
+            </ul>
+        </div>
+        <div id="sidebar-wrapper-help">
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="header-h1 my-not-visible-large-xs">
+                <h1 class="text-center">{% block head_title_2 %}{% endblock %}</h1>
+                <span id="refresh_data_main_mobile"></span>
+            </div>
+
+
+            <div class="block_content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+{% else %}
+
+    <div id="auth_panel">
+        <div class="div-table">
+            <div class="div-table-cell">
+                <div class="form-group text-center">
+                    <img class="logo" src="{% static 'admin_site/images/logo2.png' %}" alt="LOGO">
+                </div>
+                <form id="auth_panel_form" name="my-form">
+                    <div class="form-group">
+                        <label class="control-label" for="user_name">Имя пользователя</label>
+                        <input id="user_name" type="text" class="form-control"
+                               placeholder="Укажите имя пользователя...">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="user_password">Пароль</label>
+                        <input id="user_password" type="password" class="form-control"
+                               placeholder="Укажите пароль...">
+                    </div>
+                </form>
+                <div class="form-group">
+                    <div class="checkbox text-center">
+                        <input id="not_save_sessions" type="checkbox" class="my_checkbox" style="display: none;">
+                        <label for="not_save_sessions" class="check" style="padding: 0">
+                            <svg width="18px" height="18px" viewBox="0 0 18 18">
+                                <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                                <polyline points="1 9 7 14 15 4"></polyline>
+                            </svg>
+                            <label for="not_save_sessions" style="padding: 0">Это чужой компьютер</label>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button id="signIn" type="button" class="btn btn-purple btn-outline">
+                        <span class="fa-stack"><i class="fa fa-sign-in"></i></span>
+                        <span class="btn-label">Войти</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<div id="ask_modal" style="display: none;">
+    <div class="card">
+        <div class="card-body">
+            <h3 id="text_ask_modal" class="text-center card-title"></h3>
+            <div class="text-center">
+                <button id="submit_ask_modal" type="button" class="btn btn-success btn-outline">
+                    <span class="fa-stack"><i class="fa fa-check"></i></span>
+                    <span class="btn-label my-not-visible-xs">Подтвердить</span></button>
+                <button id="dismiss_ask_modal" type="button" class="btn btn-danger btn-outline">
+                    <span class="fa-stack"><i class="fa fa-remove"></i></span>
+                    <span class="btn-label my-not-visible-xs">Отмена</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="load-panel" style="display: none;">
+    <div class='sk-three-bounce'>
+        <div class='sk-bounce-1 sk-child'></div>
+        <div class='sk-bounce-2 sk-child'></div>
+        <div class='sk-bounce-3 sk-child'></div>
+    </div>
+</section>
+
+<div id="right_click_menu">
+     <button type="button" class="btn btn-purple btn-outline copy-button">
+        <span class="fa-stack"><i class="fa fa-copy"></i></span><span class="btn-label my-not-visible-xs">Копировать</span>
+    </button>
+</div>
+
+<script type="text/javascript" src="{% static 'admin_site/js/integration/icon_integration.js' %}"></script>
+</body>
+</html>

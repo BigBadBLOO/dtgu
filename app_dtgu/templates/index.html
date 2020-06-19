@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Дэшборд</title>
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/iconsminds.css' %}">
+
+    <script type="text/javascript" src="{% static 'admin_site/js/index/index.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/index/index.css' %}">
+    {% if user.profile.group.name == "Администратор" %}
+        <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/index/index_admin.css' %}">
+        <script type="text/javascript" src="{% static 'admin_site/js/index/index_admin.js' %}"></script>
+    {% endif %}
+    {% if user.profile.group.name == "Менеджер" %}
+        <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/index/index_manager.css' %}">
+        <script type="text/javascript" src="{% static 'admin_site/js/index/index_manager.js' %}"></script>
+    {% endif %}
+    {% if user.profile.group.name == "Рекламодатель" %}
+        <link rel="stylesheet" type="text/css" href="{% static 'admin_site/css/index/index_advertiser.css' %}">
+        <script type="text/javascript" src="{% static 'admin_site/js/index/index_advertiser.js' %}"></script>
+    {% endif %}
+
+{% endblock %}
+
+{% block head_title_1 %}Дэшборд{% endblock %}
+{% block head_title_2 %}Дэшборд{% endblock %}
+
+{% block content %}
+{% endblock %}
