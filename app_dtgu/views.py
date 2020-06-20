@@ -36,12 +36,10 @@ def calc_marks(request):
 
     args = {
         'marks': list(marks.values()),
-        'paramsMarks': list(ParamsMarks.objects.filter(mark__in=set(marks.values_list('id', flat=True))).values())
+        'paramsMarks': list(ParamsMarks.objects.all().values())
     }
 
     args.update(csrf(request))
-
-
     return HttpResponse(json.dumps(args))
 
 

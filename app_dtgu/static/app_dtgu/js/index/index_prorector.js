@@ -62,7 +62,11 @@ function make_result(data) {
     );
 
     init_tree();
+
+    setTimeout(    makeGraph, 2000);
     hide_load();
+
+
 }
 
 function init_tree(){
@@ -112,9 +116,29 @@ function getTree() {
         var paramMark = search_list_in_json(paramsMarks,'mark_id', item.id);
         var paramMark_node = [];
         paramMark.forEach(function (param) {
+            var children = search_list_in_json(paramsMarks,'HighOrderParamMark_id', param.id);
+
+            var childrenParam = [];
+            children.forEach(function (childParam) {
+                var child_graph = [{
+                    text: '<div id="graph" style="display: table"></div>',
+                    type: 'childParamGraph',
+                    field_search: 'childParamGraph_' + childParam.id,
+                    pk: 'childParamGraph_' + childParam.id,
+                }];
+
+                childrenParam.push({
+                    text: childParam.name,
+                    type: 'childParam',
+                    nodes: childParam.name === 'Газпром' ? child_graph : [],
+                    field_search: 'childParam_' + childParam.id,
+                    pk: childParam.id,
+                })
+            });
             paramMark_node.push({
                 text: param.name + '<span class="pull-right" style="font-weight: 600">' + param.value + '</span>',
                 type: 'param',
+                nodes:childrenParam,
                 field_search: 'param_' + param.id,
                 pk: param.id,
             });
@@ -138,4 +162,160 @@ function _getChildren(node) {
         childrenNodes = childrenNodes.concat(_getChildren(n));
     });
     return childrenNodes;
+}
+
+function makeGraph() {
+
+    var html = '<div class="col-sm-12 col-md-12 col-lg-6">\n' +
+        '                <div class="card">\n' +
+        '                    <div class="card-body">\n' +
+        '                        <p class="card-text pull-left">Динамика зарплаты</p>\n' +
+        '                        <canvas id="LeftChart"></canvas>\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>';
+
+    html += '<div class="col-sm-12 col-md-12 col-lg-6">\n' +
+        '                <div class="card">\n' +
+        '                    <div class="card-body">\n' +
+        '                        <p class="card-text pull-left">Динамика вакансий</p>\n' +
+        '                        <canvas id="RightChart"></canvas>\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
+        '            </div>';
+
+    $('#graph').html(html);
+    makeGraphData();
+}
+
+function makeGraphData() {
+
+    var data_for_left_chart = {};
+    var data_for_right_chart = {};
+
+    var type_for_left_char = 'this_week';
+    var type_for_right_char = 'this_week';
+
+    var options = {
+        legend: {
+            display: false
+        },
+        elements: {
+            line: {
+                tension: 0
+            }
+        },
+        tooltips: {
+            mode: 'point',
+            bodyFontSize: 15,
+            bodySpacing: 3,
+            callbacks: {
+                label: function (tooltipItem, data) {
+                    return ' ' + tooltipItem.yLabel;
+                }
+            },
+
+        },
+        scales: {
+            yAxes: [{
+                gridLines: {
+                    drawBorder: false,
+                },
+                ticks: {
+                    callback: function (value, index, values) {
+                        return value;
+                    }
+
+                }
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                }
+            }]
+
+        }
+
+    };
+    Chart.defaults.global.hover.mode = 'index';
+    Chart.defaults.global.elements.point.radius = 5;
+    Chart.defaults.global.elements.point.hoverRadius = 7;
+    Chart.defaults.global.elements.point.backgroundColor = 'rgb(255, 255, 255)';
+    Chart.defaults.global.elements.point.borderColor = '#0097cc';
+    Chart.defaults.global.elements.point.borderWidth = 2;
+
+    Chart.defaults.scale.ticks.beginAtZero = true;
+
+    Chart.defaults.global.elements.line.borderColor = '#0097cc';
+    Chart.defaults.global.elements.line.backgroundColor = 'rgba(146, 44, 136,.1)';
+
+
+    var l_ctx = document.getElementById('LeftChart').getContext('2d');
+    var r_ctx = document.getElementById('RightChart').getContext('2d');
+    var l_chart = new Chart(l_ctx, {
+        type: 'line',
+        options: options
+    });
+
+    var r_chart = new Chart(r_ctx, {
+        type: 'line',
+        options: options
+    });
+
+    function change_data_in_left_chart() {
+        if (type_for_left_char in data_for_left_chart) {
+            l_chart.clear();
+            l_chart.data = data_for_left_chart[type_for_left_char];
+            l_chart.update();
+        }
+    }
+
+    function change_data_in_right_chart() {
+        if (type_for_right_char in data_for_right_chart) {
+            r_chart.clear();
+            r_chart.data = data_for_right_chart[type_for_right_char];
+            r_chart.update();
+        }
+    }
+
+    function change_data_in_charts(data) {
+        if('chart_profit_calc' in  data.dataset){
+           data_for_left_chart = data.dataset.chart_profit_calc;
+           change_data_in_left_chart();
+        }
+        if('chart_leads_count' in  data.dataset){
+           data_for_right_chart = data.dataset.chart_leads_count;
+            change_data_in_right_chart();
+        }
+    }
+
+    var data = {
+
+        dataset:{
+            chart_profit_calc:{
+                this_week:{
+                    datasets:[
+                        {
+                            data:[78800, 75500,77900,79300,80000,79500]
+                        }
+                    ],
+                    labels:['01.20','02.20','03.20','04.20','05.20','06.20']
+                }
+            },
+            chart_leads_count:{
+                this_week:{
+                    datasets:[
+                        {
+                            data:[420, 240,290,350,300,400]
+                        }
+                    ],
+                    labels:['01.20','02.20','03.20','04.20','05.20','06.20']
+                }
+
+            }
+        }
+    };
+    change_data_in_charts(data);
+
+
 }

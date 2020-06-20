@@ -22,6 +22,4 @@ urlpatterns = [
     path('test_username/', test_username, name="test_username"),
     path('work_user_profile/', work_user_profile, name="work_user_profile"),
     path('delete_admin_user_profile/', delete_admin_user_profile, name="delete_admin_user_profile"),
-
-
 ]

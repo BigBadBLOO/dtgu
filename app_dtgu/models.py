@@ -79,7 +79,7 @@ class Marks(models.Model):
 class ParamsMarks(models.Model):
     name = models.TextField(max_length=500, blank=True, null=True, verbose_name="Название")
     value = models.TextField(max_length=500, blank=True, null=True, verbose_name="Значение")
-    mark = models.ForeignKey(Marks, on_delete=models.CASCADE, verbose_name="Критерий оценки")
+    mark = models.ForeignKey(Marks, on_delete=models.CASCADE, verbose_name="Критерий оценки", blank=True, null=True)
     HighOrderParamMark = models.ForeignKey("self", on_delete=models.CASCADE, verbose_name="Критерий оценки высшего порядка", blank=True,null=True)
 
     def __str__(self):
