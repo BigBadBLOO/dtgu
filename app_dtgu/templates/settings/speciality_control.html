@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Настройка специальностей</title>
+{% endblock %}
+
+{% block head_title %}
+    Настройки специальностей
+{% endblock %}
+
+{% block head_title_1 %}Управление специальностями{% endblock %}
+{% block head_title_2 %}Управление специальностями{% endblock %}
+
+{% block content %}
+    <script type="text/javascript" src="{% static 'app_dtgu/js/grid_global.js' %}"></script>
+    <script src="{% static 'app_dtgu/js/settings/specialty_control.js' %}"></script>
+
+    <div class="row">
+        <div class="col-lg-12 my-btn-panel">
+            <button type="button" class="btn btn-success btn-outline" data-toggle="modal"
+                    title="Добавить новые данные..."
+                    data-target="#my_modal_panel">
+                <span class="fa-stack"><i class="fa fa-plus"></i></span><span
+                    class="btn-label my-not-visible-xs">Добавить</span>
+            </button>
+            <button id="del_rows" type="button" class="btn btn-danger btn-outline"
+                    title="Удалить выбранные данные...">
+                <span class="fa-stack"><i class="fa fa-close"></i></span><span
+                    class="btn-label my-not-visible-xs">Удалить</span>
+            </button>
+            <div class="dropdown" style="display: inline-block">
+                <button class="btn btn-purple btn-outline dropdown-toggle" type="button"
+                        id="grid_row_count_btn"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
+                        class="fa-stack"><i
+                        class="fa fa-chevron-down"></i></span> <span class="btn-label my-not-visible-xs"
+                                                                     id="selected_grid_row_count"></span></button>
+                <ul class="dropdown-menu" aria-labelledby="grid_row_count_btn">
+
+                    <li><a href="#" class="grid_row_count div-table" data-id="10"><span
+                            class="is_active template_select_icon div-table-cell"><i
+                            class="fa fa-check"></i></span><span
+                            class="div-table-cell">10</span></a></li>
+                    <li><a href="#" class="grid_row_count div-table" data-id="25"><span
+                            class="is_active template_select_icon div-table-cell"><i
+                            class="fa fa-check"></i></span><span
+                            class="div-table-cell">25</span></a></li>
+                    <li><a href="#" class="grid_row_count div-table" data-id="50"><span
+                            class="is_active template_select_icon div-table-cell"><i
+                            class="fa fa-check"></i></span><span
+                            class="div-table-cell">50</span></a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" class="grid_row_count div-table active" data-id="0"><span
+                            class="is_active template_select_icon div-table-cell"><i
+                            class="fa fa-check"></i></span><span
+                            class="div-table-cell">100</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div id="myGrid" style="width: 100%;" class="ag-theme-material"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="my_modal_panel" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="add_profile"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <!-- Заголовок модального окна -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <!-- Основное содержимое модального окна -->
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="control-label" for="name">Название специальности</label>
+                            <input id="name" type="text" class="form-control"
+                                   placeholder="Укажите специальность...">
+                            <span class="subinfo subinfo-error">Не корректное название специальности</span>
+                            <span class="subinfo subinfo-warning">Проверка специальности</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="name_en">Название специальности на англ.</label>
+                            <input id="name_en" type="text" class="form-control"
+                                   placeholder="Укажите специальность...">
+                            <span class="subinfo subinfo-error">Не корректное название специальности</span>
+                            <span class="subinfo subinfo-warning">Проверка специальности</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="code">Код специальности</label>
+                            <input id="code" type="text" class="form-control"
+                                   placeholder="Укажите код спецаильности...">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="code_en">Код специальности для англ.</label>
+                            <input id="code_en" type="text" class="form-control"
+                                   placeholder="Укажите код спецаильности...">
+                        </div>
+                    </form>
+                </div>
+                <!-- Футер модального окна -->
+                <div class="modal-footer">
+                    <button id="button_create" type="button" class="btn btn-success btn-outline">
+                        <span class="fa-stack"><i class="fa fa-check"></i></span><span
+                            class="btn-label">Сохранить</span></button>
+                    <button type="button" class="btn btn-danger btn-outline" data-dismiss="modal">
+                        <span class="fa-stack"><i class="fa fa-remove"></i></span><span class="btn-label">Отмена</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

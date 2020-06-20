@@ -1,0 +1,115 @@
+#my_global_alert {
+    width: 100%;
+    position: fixed;
+    z-index: 1100;
+    left: 0;
+    top: 0;
+    border-radius: 0;
+    margin: 0;
+    min-height: 60px;
+}
+
+
+.form-group .subinfo {
+    color: #ccc;
+    display: none;
+    text-align: center;
+    border: 1px solid;
+    /*border-radius: 17px;*/
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin: 1rem 0;
+}
+
+.form-group.has-success .control-label {
+    color: #3c763d !important;
+}
+
+.form-group.has-success .subinfo-success {
+    color: #3e884f;
+    background-color: #d3e2d6;
+    border-color: rgba(62, 136, 79, .1);
+}
+
+.form-group.has-warning .control-label {
+    color: #8a6d3b !important;
+}
+
+.form-group.has-warning .subinfo-warning {
+    color: #b69329;
+    background-color: #ebe4cf;
+    border-color: rgba(182, 147, 41, .1);
+}
+
+.form-group.has-error .control-label {
+    color: #a94442 !important;
+}
+
+.form-group.has-error .subinfo-error {
+    color: #c43d4b;
+    background-color: #eed3d5;
+    border-color: rgba(196, 61, 75, .1);
+}
+
+.form-group.has-success .subinfo-success {
+    display: block;
+}
+
+.form-group.has-warning .subinfo-warning {
+    display: block;
+}
+
+.form-group.has-error .subinfo-error {
+    display: block;
+}
+
+.tooltip.right .tooltip-arrow {
+    border-right-color: rgba(0, 0, 0, .25);
+}
+
+.tooltip-inner {
+    color: #3a3a3a;
+    background-color: #fff;
+    box-shadow: 0 0 2px;
+}
+
+.tooltip.in {
+    opacity: 1;
+}
+
+#ask_modal {
+    z-index: 2000;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, .75);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+
+}
+
+#ask_modal .card {
+    width: 425px;
+    margin: 0 auto;
+    margin-top: 30px;
+    border: initial;
+    border-radius: .1rem;
+    background: #fff;
+}
+
+
+
+@media (max-width: 425px) {
+    #ask_modal .card {
+        width: 95%;
+    }
+
+}
+
+@media (min-width:992px){.modal-xl{width:75vw}}
