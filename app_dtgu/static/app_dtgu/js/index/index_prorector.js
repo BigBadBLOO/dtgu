@@ -121,7 +121,7 @@ function getTree() {
 
             if(param.name === '% выпускников, трудоустроенных в ведущих компаниях, в течение года после выпуска'){
                 childrenParam.push(  {
-                    text: '<div id="graph_2_2_1" style="display: table"></div>',
+                    text: '<div id="graph_2_2_1" style="display: table;max-height: 200px"></div>',
                     type: 'childParamGraph',
                     field_search: 'childParamGraph_' + param.id,
                     pk: 'childParamGraph_' + param.id,
@@ -130,7 +130,7 @@ function getTree() {
 
             if(param.name === 'Отношение средней з/п выпускника в первый год работы к средней з/п по региону'){
                 childrenParam.push(  {
-                    text: '<div id="graph_2_2_2" style="display: table"></div>',
+                    text: '<div id="graph_2_2_2" style="display: table;max-height: 200px"></div>',
                     type: 'childParamGraph',
                     field_search: 'childParamGraph_' + param.id,
                     pk: 'childParamGraph_' + param.id,
@@ -205,7 +205,7 @@ function _getChildren(node) {
     return childrenNodes;
 }
 
-function make_card_graph(marker,text, column=12) {
+function make_card_graph(marker,text, column=6) {
     return '<div class="col-sm-12 col-md-12 col-lg-' + column + '">\n' +
         '                <div class="card">\n' +
         '                    <div class="card-body">\n' +
@@ -219,8 +219,8 @@ function makeGraph() {
     var html = make_card_graph("LeftChart", "Динамика зарплаты", 6);
     html += make_card_graph("RightChart", "Динамика вакансий", 6);
 
-    var html_2_2_1 = make_card_graph("Chart_2_2_1", "% выпускников, трудоустроенных в ведущих компаниях, в течение 5 лет");
-    var html_2_2_2 = make_card_graph("Chart_2_2_2", "Отношение средней з/п выпускника за 5 лет");
+    var html_2_2_1 = make_card_graph("Chart_2_2_1", "% выпускников, трудоустроенных в ведущих компаниях, в течение 5 лет",6);
+    var html_2_2_2 = make_card_graph("Chart_2_2_2", "Отношение средней з/п выпускника за 5 лет", 6);
     
     $('#graph').html(html);
     
@@ -393,7 +393,7 @@ function makeGraphData_1_2() {
                 this_week:{
                     datasets:[
                         {
-                            data:[420, 240,290,350,300,400]
+                            data:[42, 24,29,35,30,40]
                         }
                     ],
                     labels:['01.20','02.20','03.20','04.20','05.20','06.20']
