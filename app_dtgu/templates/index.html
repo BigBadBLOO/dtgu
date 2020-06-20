@@ -14,16 +14,17 @@
 
 {% block content %}
     {% if user.profile.group.name == "Администратор" %}
-        <div class="form-group col-lg-4">
-            <label class="control-label" for="typeMarks">Тип оценок</label>
-            <select id="typeMarks" data-placeholder="Укажите тип оценки..."
-                    class="chosen-select form-control">
-            </select>
-        </div>
+
         <div id="second_block" class="form-group col-lg-8">
             <label class="control-label" for="typeMarks">Cпециальность</label>
             <select id="speciality" data-placeholder="Cпециальность..."
                 class="chosen-select form-control">
+            </select>
+        </div>
+         <div class="form-group col-lg-4">
+            <label class="control-label" for="typeMarks">Тип оценок</label>
+            <select id="typeMarks" data-placeholder="Укажите тип оценки..."
+                    class="chosen-select form-control">
             </select>
         </div>
         <div id="third_block_name" class="form-group col-lg-12"></div>
