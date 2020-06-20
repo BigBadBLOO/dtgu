@@ -1085,3 +1085,9 @@ input[type=checkbox]:checked + div > div > span:before {
 .error{
     border-color: darkred!important;
 }
+
+.btn-adding{
+    padding: 0 5px 0 5px!important;
+    white-space: pre-wrap;
+
+}

@@ -79,10 +79,17 @@
             </div>
 
              <div class="pull-right">
-                    <div class="header-h1 my-not-visible-xs" style="float: left">
-                        <h1>{{ user.first_name }}</h1>
-                    </div>
-                <span id="refresh_data_main"></span>
+                 <div class="header-h1" style="display: inline-block;"
+                    data-toggle="modal"
+                    title="Обучающие материалы..."
+                    data-target="#info_modal"
+                 >
+                     <h1 style="border: 1px solid rgba(220,71,54,0.56);border-radius: 50px; color: rgba(220,71,54,0.56);">?</h1>
+                 </div>
+                <div class="header-h1 my-not-visible-xs" style="display: inline-block">
+                    <h1>{{ user.first_name }}</h1>
+                </div>
+
             </div>
         </div>
     </nav>
@@ -98,7 +105,7 @@
                                       data-inline="false"></span>
                             </div>
                             <div class="div-table-cell">
-                                Dashbord
+                                Оценка образования
                             </div>
                         </div>
                     </a>
@@ -216,6 +223,26 @@
         <div class='sk-bounce-3 sk-child'></div>
     </div>
 </section>
+
+
+<div id="info_modal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="add_profile"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <!-- Заголовок модального окна -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Обучающие материалы</h4>
+            </div>
+            <!-- Основное содержимое модального окна -->
+            <div class="modal-body">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>

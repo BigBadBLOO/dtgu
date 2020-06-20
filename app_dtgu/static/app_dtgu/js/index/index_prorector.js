@@ -4,7 +4,7 @@ var marks = [];
 var paramsMarks = [];
 
 var specialitys_id = -1;
-
+var type_id = -1;
 $(document).ready(function () {
     ajax_message('/index_init/', {'csrfmiddlewaretoken': $($(tokenlist[0]).children()[0]).val()}, make_index)
 });
@@ -18,7 +18,7 @@ function make_index(data) {
     specialty.map((item) => item.name = item.code + ' ' + item.name);
 
     $('#typeMarks').html(make_selector(typeMarks)).chosen(chosen_def).change(function () {
-            var type_id = $(this).val();
+            type_id = $(this).val();
             var speciality_id = $('#speciality').val();
             if(speciality_id !== ''){
                 get_data(type_id, speciality_id)
@@ -31,7 +31,7 @@ function make_index(data) {
     $('#speciality').html(make_selector(specialty,true)).chosen(chosen_def).change(function () {
          var speciality_id = $(this).val();
          specialitys_id = speciality_id;
-         var type_id =  $('#typeMarks').val();
+         type_id =  $('#typeMarks').val();
          show_load();
          get_data(type_id, speciality_id)
     });
@@ -53,20 +53,26 @@ function make_result(data) {
     paramsMarks = data['paramsMarks'];
     var specialty_obj = search_in_json(specialty, 'id', specialitys_id);
     if(typeof specialty_obj === 'object'){
-
+        $('#third_block_name').html(
+                '<h3 class="name">' + specialty_obj['name'] + ' (' + specialty_obj['code_en'] + ' ' + specialty_obj['name_en'] + ')' + '</h3>'
+            );
     }else {
         $('#third_block_name').html('' );
     }
-    $('#third_block_name').html(
-        '<h3 class="name">' + specialty_obj['name'] + ' (' + specialty_obj['code_en'] + ' ' + specialty_obj['name_en'] + ')' + '</h3>'
-    );
+
+    if(type_id == 1){
+         $('#recommend_block').html('<div class="alert alert-success">Специализация соответствует заданным критериям</div>')
+    }else if(type_id == 2){
+        $('#recommend_block').html('<div class="alert alert-danger">Обратите внимание на критичные показатели</div>')
+    }else {
+        $('#recommend_block').html('');
+    }
+
+
 
     init_tree();
 
     setTimeout(makeGraph, 2000);
-    setTimeout(hide_load, 1000);
-
-
 }
 
 function init_tree(){
@@ -121,7 +127,7 @@ function getTree() {
 
             if(param.name === '% выпускников, трудоустроенных в ведущих компаниях, в течение года после выпуска'){
                 childrenParam.push(  {
-                    text: '<div id="graph_2_2_1" style="display: table;max-height: 200px"></div>',
+                    text: '<div id="graph_2_2_1" style="display: table;"></div>',
                     type: 'childParamGraph',
                     field_search: 'childParamGraph_' + param.id,
                     pk: 'childParamGraph_' + param.id,
@@ -130,7 +136,7 @@ function getTree() {
 
             if(param.name === 'Отношение средней з/п выпускника в первый год работы к средней з/п по региону'){
                 childrenParam.push(  {
-                    text: '<div id="graph_2_2_2" style="display: table;max-height: 200px"></div>',
+                    text: '<div id="graph_2_2_2" style="display: table;"></div>',
                     type: 'childParamGraph',
                     field_search: 'childParamGraph_' + param.id,
                     pk: 'childParamGraph_' + param.id,
@@ -157,8 +163,12 @@ function getTree() {
                     pk: childParam.id,
                 })
             });
+            var valueMinsss = param.valueMin === null ? '' : ' (' + param.valueMin + ')';
+
             paramMark_node.push({
-                text: make_name(param.name) + '<span class="pull-right" style="font-weight: 600">' + param.value + '</span>',
+                text: make_name(param.name, param['is_good']) + '<span class="pull-right" style="font-weight: 600">'
+                    + param.value + valueMinsss +
+                    '</span>',
                 type: 'param',
                 nodes:childrenParam,
                 field_search: 'param_' + param.id,
@@ -173,7 +183,6 @@ function getTree() {
             pk: item.id,
         });
     });
-    console.log(tree);
   return tree;
 }
 
@@ -190,8 +199,15 @@ function expandChildrenNode(el,marker) {
 }
 
 
-function make_name(name) {
-    return '<span onclick="expandChildrenNode(this,\'third_block\')">' + name + '</span>'
+function make_name(name, trigger ) {
+    var classNames = '';
+    if(trigger){
+        classNames = 'btn btn-success btn-outline btn-adding'
+    }
+    if(trigger === false){
+        classNames = 'btn btn-danger btn-outline btn-adding'
+    }
+    return '<span onclick="expandChildrenNode(this,\'third_block\')" class="' + classNames + '">' + name + '</span>'
 }
 
 
@@ -207,20 +223,20 @@ function _getChildren(node) {
 
 function make_card_graph(marker,text, column=6) {
     return '<div class="col-sm-12 col-md-12 col-lg-' + column + '">\n' +
-        '                <div class="card">\n' +
-        '                    <div class="card-body">\n' +
-        '                        <p class="card-text pull-left">' + text + '</p>\n' +
-        '                        <canvas id="' + marker + '"></canvas>\n' +
-        '                    </div>\n' +
-        '                </div>\n' +
-        '            </div>';
+    '                <div class="card">\n' +
+    '                    <div class="card-body">\n' +
+    '                        <p class="card-text pull-left">' + text + '</p>\n' +
+    '                        <canvas id="' + marker + '"></canvas>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '            </div>';
 }
 function makeGraph() {
     var html = make_card_graph("LeftChart", "Динамика зарплаты", 6);
     html += make_card_graph("RightChart", "Динамика вакансий", 6);
 
-    var html_2_2_1 = make_card_graph("Chart_2_2_1", "% выпускников, трудоустроенных в ведущих компаниях, в течение 5 лет",6);
-    var html_2_2_2 = make_card_graph("Chart_2_2_2", "Отношение средней з/п выпускника за 5 лет", 6);
+    var html_2_2_1 = make_card_graph("Chart_2_2_1", "% выпускников, трудоустроенных в ведущих компаниях, в течение 5 лет",8);
+    var html_2_2_2 = make_card_graph("Chart_2_2_2", "Отношение средней з/п выпускника за 5 лет", 8);
     
     $('#graph').html(html);
     
@@ -299,26 +315,83 @@ function makeGraphData_1_2() {
 
     try {
         var l_ctx = document.getElementById('LeftChart').getContext('2d');
+        var opts = options;
+        opts['scales'] = {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Зарплата (рубли)'
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Время (месяцы)'
+              }
+            }]
+         };
         var l_chart = new Chart(l_ctx, {
             type: 'line',
-            options: options
+            options: opts,
         });
 
+        opts['scales'] = {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Количество вакансий (шт.)'
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Время (месяцы)'
+              }
+            }]
+         };
         var r_ctx = document.getElementById('RightChart').getContext('2d');
         var r_chart = new Chart(r_ctx, {
             type: 'line',
-            options: options
+            options: opts
         });
     }catch (e) {}
 
     try {
         var ctx_2_2_1 = document.getElementById('Chart_2_2_1').getContext('2d');
+        opts['scales'] = {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Количество выпускников (%)'
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Время (год)'
+              }
+            }]
+         };
         var chart_2_2_1 = new Chart(ctx_2_2_1, {
             type: 'line',
             options: options
         });
 
         var ctx_2_2_2 = document.getElementById('Chart_2_2_2').getContext('2d');
+        opts['scales'] = {
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Отношение зарплат (%)'
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Время (год)'
+              }
+            }]
+         };
         var chart_2_2_2 = new Chart(ctx_2_2_2, {
             type: 'line',
             options: options

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    <title>Dashboard</title>
+    <title>Оценка образования</title>
 {% endblock %}
 
 {% block head %}
@@ -11,26 +11,36 @@
     {% endif %}
 {% endblock %}
 
-{% block head_title_1 %}Dashboard{% endblock %}
-{% block head_title_2 %}Dashboard{% endblock %}
+{% block head_title_1 %}Оценка параметров востребованности и качества образования {% endblock %}
+{% block head_title_2 %}Оценка образования{% endblock %}
 
 {% block content %}
     {% if user.profile.group.name == "Администратор" %}
 
         <div id="second_block" class="form-group col-lg-8">
-            <label class="control-label" for="typeMarks">Cпециальность</label>
-            <select id="speciality" data-placeholder="Cпециальность..."
+            <label class="control-label" for="typeMarks">Выберите специальность</label>
+            <select id="speciality" data-placeholder="или начните вводить..."
                 class="chosen-select form-control">
             </select>
         </div>
          <div class="form-group col-lg-4">
-            <label class="control-label" for="typeMarks">Тип оценок</label>
+            <label class="control-label" for="typeMarks">Выберите тип оценки</label>
             <select id="typeMarks" data-placeholder="Укажите тип оценки..."
                     class="chosen-select form-control">
             </select>
         </div>
         <div id="third_block_name" class="form-group col-lg-12"></div>
+        <div class="form-group col-lg-8">
+            <p>Критерии оценки промежуточной аттестации</p>
+
+        </div>
+        <div class="col-lg-4">
+        <span class="pull-right">Значение (Пороговое значение)</span>
+        </div>
         <div id="third_block" class="form-group col-lg-12">
+        </div>
+
+        <div id="recommend_block" class="form-group col-lg-12">
         </div>
 
     {% endif %}

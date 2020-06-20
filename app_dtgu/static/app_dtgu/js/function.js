@@ -485,7 +485,7 @@ function ajax_message(url, data, funct) {
         data: data,
         dataType: 'JSON',
         success: function (data) {
-            // hide_load();
+            hide_load();
             // data = JSON.parse(data);
             if (typeof data['text_error'] !== 'undefined') {
                 show_global_alert('danger', data['text_error'], 0);
