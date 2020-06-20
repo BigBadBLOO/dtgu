@@ -14,16 +14,21 @@
 
 {% block content %}
     {% if user.profile.group.name == "Администратор" %}
-        <div class="form-group col-lg-2">
+        <div class="form-group col-lg-4">
             <label class="control-label" for="typeMarks">Тип оценок</label>
             <select id="typeMarks" data-placeholder="Укажите тип оценки..."
                     class="chosen-select form-control">
             </select>
         </div>
-        <div id="second_block" class="form-group col-lg-3">
-
+        <div id="second_block" class="form-group col-lg-8">
+            <label class="control-label" for="typeMarks">Cпециальность</label>
+            <select id="speciality" data-placeholder="Cпециальность..."
+                class="chosen-select form-control">
+            </select>
         </div>
-         <script type="text/javascript" src="{% static 'app_dtgu/js/index/index.js' %}"></script>
+        <div id="third_block" class="form-group col-lg-12">
+        </div>
+        <script type="text/javascript" src="{% static 'app_dtgu/js/index/index.js' %}"></script>
     {% endif %}
 
     {% if user.profile.group.name == "Студент" %}

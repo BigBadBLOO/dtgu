@@ -37,6 +37,7 @@
     <script type="text/javascript" src="{% static 'app_dtgu/js/base.js' %}"></script>
     <script type="text/javascript" src="{% static 'app_dtgu/js/alert.js' %}"></script>
     <script type="text/javascript" src="{% static 'app_dtgu/js/ag-grid-community.min.noStyle.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app_dtgu/js/bootstrap-treeview.js' %}"></script>
 
     <script type="text/javascript" src="{% static 'app_dtgu/js/text_filter.js' %}"></script>
 
@@ -75,6 +76,13 @@
                  style="float: left;"><h1
                     class="cut-text">
                 {% block head_title_1 %}{% endblock %}</h1>
+            </div>
+
+             <div class="pull-right">
+                    <div class="header-h1 my-not-visible-xs" style="float: left">
+                        <h1>{{ user.first_name }}</h1>
+                    </div>
+                <span id="refresh_data_main"></span>
             </div>
         </div>
     </nav>

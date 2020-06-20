@@ -32,7 +32,15 @@ def calc_marks(request):
     args = {}
     type_test = request.POST.get('type_id')
     specialty_id = request.POST.get('speciality_id')
+    marks = Marks.objects.filter(university__id=request.user.profile.university_id).filter(typeMarks=type_test)
+
+    args = {
+        'marks': list(marks.values()),
+        'paramsMarks': list(ParamsMarks.objects.filter(mark__in=set(marks.values_list('id', flat=True))).values())
+    }
+
     args.update(csrf(request))
+
 
     return HttpResponse(json.dumps(args))
 
