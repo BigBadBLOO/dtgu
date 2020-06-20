@@ -1081,3 +1081,7 @@ input[type=checkbox]:checked + div > div > span:before {
 .node-hidden{
     display: none;
 }
+
+.error{
+    border-color: darkred!important;
+}
