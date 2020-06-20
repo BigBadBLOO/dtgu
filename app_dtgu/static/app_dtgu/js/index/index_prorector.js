@@ -68,8 +68,6 @@ function make_result(data) {
         $('#recommend_block').html('');
     }
 
-
-
     init_tree();
 
     setTimeout(makeGraph, 2000);
@@ -163,8 +161,8 @@ function getTree() {
                     pk: childParam.id,
                 })
             });
-            var valueMinsss = param.valueMin === null ? '' : ' (' + param.valueMin + ')';
-
+            var valueMinsss = param.valueMin === null || param.valueMin === '' ? '' : ' (' + param.valueMin + ')';
+            console.log(valueMinsss);
             paramMark_node.push({
                 text: make_name(param.name, param['is_good']) + '<span class="pull-right" style="font-weight: 600">'
                     + param.value + valueMinsss +
