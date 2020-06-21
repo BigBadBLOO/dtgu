@@ -104,5 +104,17 @@ class Subject(models.Model):
         verbose_name_plural = 'Учебные предметы'
 
 
+class Count(models.Model):
+    name = models.TextField(max_length=500, blank=True, null=True, verbose_name="Название")
+    ip = models.TextField(max_length=500, blank=True, null=True, verbose_name="Название")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Счет'
+        verbose_name_plural = 'Счет'
+
+
 
 

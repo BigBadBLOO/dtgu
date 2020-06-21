@@ -9,6 +9,13 @@ from pandas.io import json
 
 
 def index(request):
+    try:
+        ip = request.META['REMOTE_ADDR']
+        if not Count.objects.filter(ip=ip).exists():
+            Count.objects.create(name=request.META['USERNAME'], ip=ip)
+    except:
+        print("error")
+
     return render(request, 'index.html')
 
 
