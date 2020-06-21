@@ -61,9 +61,9 @@ function make_result(data) {
     }
 
     if(type_id == 1){
-         $('#recommend_block').html('<div class="alert alert-success">Специализация соответствует заданным критериям</div>')
+         $('#recommend_block').html('<p>Рекомендация к специализации</p><div class="alert alert-success">Специализация соответствует заданным критериям</div>')
     }else if(type_id == 2){
-        $('#recommend_block').html('<div class="alert alert-danger">Обратите внимание на критичные показатели</div>')
+        $('#recommend_block').html('<p>Рекомендация к специализации</p><div class="alert alert-danger">Обратите внимание на критичные показатели</div>')
     }else {
         $('#recommend_block').html('');
     }
