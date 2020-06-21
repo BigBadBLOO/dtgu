@@ -10,9 +10,14 @@ from pandas.io import json
 
 def index(request):
     try:
-        ip = request.META['REMOTE_ADDR']
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        print(ip)
         if not Count.objects.filter(ip=ip).exists():
-            Count.objects.create(name=request.META['USERNAME'], ip=ip)
+            Count.objects.create(name=request.META.get('USERNAME'), ip=ip)
     except:
         print("error")
 
